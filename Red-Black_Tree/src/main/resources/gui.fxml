@@ -9,12 +9,15 @@
             prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.nahap.Controller">
     <children>
-        <ScrollPane layoutX="422.0" prefHeight="400.0" prefWidth="178.0"  AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="0.0">
+        <ScrollPane fx:id="scrollPane" layoutX="422.0" prefHeight="400.0" prefWidth="178.0"
+                    AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0">
             <content>
                 <Button mnemonicParsing="false" text="Кнопка" />
             </content>
         </ScrollPane>
-        <Canvas fx:id="canvas" layoutX="10.0" layoutY="10.0" width="400.0" height="380.0"/>
+        <Canvas fx:id="canvas" layoutX="10.0" layoutY="10.0"
+                AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
+                AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="200.0"/>
+
     </children>
 </AnchorPane>
-
