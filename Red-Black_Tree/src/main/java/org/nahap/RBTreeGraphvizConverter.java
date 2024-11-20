@@ -19,11 +19,10 @@ public class RBTreeGraphvizConverter {
     private static <T extends Comparable<? super T>> void appendNode(StringBuilder dot, RBTree<T>.RBTreeNode node) {
         if (node == null) return;
 
-        // Node color and style
+
         String color = node.color == RBTree.RED ? "red" : "black";
         String fontColor = node.color == RBTree.RED ? "black" : "white";
 
-        // Node definition
         dot.append(String.format("    \"%s\" [color=%s, style=filled, fontcolor=%s];\n",
                 node.value, color, fontColor));
 

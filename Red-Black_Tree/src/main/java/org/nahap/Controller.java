@@ -7,10 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import org.nahap.RBTreeGraphvizConverter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,29 +26,62 @@ public class Controller {
     private ScrollPane scrollPane;
 
     @FXML
+    private TextField textField;
+
+
+
+    private final RBTree<Integer> tree = new RBTree<>();
+
+    @FXML
     public void initialize() {
         AnchorPane parentPane = (AnchorPane) canvas.getParent();
 
-        // Динамическая настройка размера Canvas относительно ScrollPane
+
         parentPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             double scrollWidth = scrollPane.getWidth();
-            double newCanvasWidth = newVal.doubleValue() - scrollWidth - 30; // Учитываем отступы
+            double newCanvasWidth = newVal.doubleValue() - scrollWidth - 30;
             canvas.setWidth(newCanvasWidth);
         });
 
         parentPane.heightProperty().addListener((obs, oldVal, newVal) -> {
-            canvas.setHeight(newVal.doubleValue() - 20); // Учитываем отступы
+            canvas.setHeight(newVal.doubleValue() - 20);
         });
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        RBTree<Integer> tree = new RBTree<>();
-        for (int i = 3; i <= 500; i+=1) {
+        for (int i = 3; i <= 9; i++) {
+            int m = (int) (i * Math.pow(-1, i));
             tree.put(i);
+            tree.put(m);
         }
 
-        String dot = RBTreeGraphvizConverter.convertToDot(tree);
+        renderTree();
+    }
 
+    @FXML
+    private void handleAdd() {
+        String input = textField.getText();
+        try {
+            int value = Integer.parseInt(input);
+            tree.put(value);
+            renderTree();
+        } catch (NumberFormatException e) {
+            System.err.println("Введите корректное число.");
+        }
+    }
+
+    @FXML
+    private void handleDelete() {
+        String input = textField.getText();
+        try {
+            int value = Integer.parseInt(input);
+            tree.remove(value);
+            renderTree();
+        } catch (NumberFormatException e) {
+            System.err.println("Введите корректное число.");
+        }
+    }
+
+    private void renderTree() {
+        String dot = RBTreeGraphvizConverter.convertToDot(tree);
         Platform.runLater(() -> {
             try {
                 BufferedImage bufferedImage = Graphviz.fromString(dot)
@@ -61,7 +94,9 @@ public class Controller {
 
                 Image image = new Image(new ByteArrayInputStream(imageData));
 
-                // Масштабирование изображения по размеру Canvas с сохранением пропорций
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
                 double canvasWidth = canvas.getWidth();
                 double canvasHeight = canvas.getHeight();
                 double imageRatio = image.getWidth() / image.getHeight();
@@ -69,13 +104,11 @@ public class Controller {
 
                 double drawWidth, drawHeight, x, y;
                 if (imageRatio > canvasRatio) {
-                    // Изображение шире, чем Canvas
                     drawWidth = canvasWidth;
                     drawHeight = canvasWidth / imageRatio;
                     x = 0;
                     y = (canvasHeight - drawHeight) / 2;
                 } else {
-                    // Изображение выше, чем Canvas
                     drawHeight = canvasHeight;
                     drawWidth = canvasHeight * imageRatio;
                     x = (canvasWidth - drawWidth) / 2;
