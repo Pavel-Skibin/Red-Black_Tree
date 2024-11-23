@@ -4,6 +4,7 @@ module org.nahap {
     requires java.desktop;
     requires guru.nidi.graphviz;
 
-    opens org.nahap to javafx.fxml;
-    exports org.nahap;
+    opens org.nahap.gui.controller to javafx.fxml;
+    opens org.nahap.gui.view to javafx.fxml;
+    exports org.nahap.gui;
 }

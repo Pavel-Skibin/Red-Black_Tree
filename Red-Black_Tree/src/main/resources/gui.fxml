@@ -7,8 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.nahap.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.nahap.gui.controller.Controller">
     <children>
         <ScrollPane fx:id="scrollPane" layoutX="422.0" layoutY="11.2" prefHeight="379.0" prefWidth="240.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0">
             <content>
@@ -19,13 +20,14 @@
                                 <TextField fx:id="textField" prefHeight="26.0" prefWidth="78.0" />
                                 <Button fx:id="addButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="Добавить" onAction="#handleAdd" />
                                 <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Удалить" onAction="#handleDelete" />
-
                             </children>
                         </HBox>
                     </children>
                 </VBox>
             </content>
         </ScrollPane>
-        <Canvas fx:id="canvas" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="10.0" />
+        <Pane fx:id="canvasContainer" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="10.0">
+            <Canvas fx:id="canvas" />
+        </Pane>
     </children>
 </AnchorPane>

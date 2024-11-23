@@ -1,5 +1,4 @@
-package org.nahap;
-
+package org.nahap.rbtree;
 
 
 public class RBTreeGraphvizConverter {

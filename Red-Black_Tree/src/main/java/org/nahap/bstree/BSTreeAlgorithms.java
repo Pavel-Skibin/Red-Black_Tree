@@ -1,6 +1,7 @@
-package org.nahap;
+package org.nahap.bstree;
 
 
+import org.nahap.binarytree.BinaryTree;
 
 public class BSTreeAlgorithms {
     /**

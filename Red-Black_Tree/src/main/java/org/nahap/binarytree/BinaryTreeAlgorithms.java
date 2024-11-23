@@ -1,4 +1,4 @@
-package org.nahap;
+package org.nahap.binarytree;
 
 import java.util.Iterator;
 import java.util.LinkedList;

@@ -1,8 +1,7 @@
-package org.nahap;
+package org.nahap.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
@@ -32,9 +31,8 @@ public class Main extends Application {
         stage.setMinHeight(720);
 
         // Установка размеров окна на весь экран
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setWidth(screenBounds.getWidth());
-        stage.setHeight(screenBounds.getHeight());
+        stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 
         stage.show();
     }

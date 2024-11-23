@@ -1,4 +1,8 @@
-package org.nahap;
+package org.nahap.rbtree;
+
+import org.nahap.bstree.BSTree;
+import org.nahap.binarytree.BinaryTree;
+import org.nahap.bstree.BSTreeAlgorithms;
 
 import java.awt.Color;
 
@@ -9,8 +13,7 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
     static final boolean RED   = true;
     static final boolean BLACK = false;
 
-    // не указываем модификаторы доступа, чтобы был доступ из того же пакета
-    // (в частности из RBTreeMap)
+
     class RBTreeNode implements BinaryTree.TreeNode<T> {
 
         public T value;

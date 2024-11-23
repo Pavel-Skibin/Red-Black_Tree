@@ -1,6 +1,7 @@
-package org.nahap;
+package org.nahap.bstree;
 
 
+import org.nahap.binarytree.BinaryTree;
 
 /**
  * Интерфейс для двоичного дерева поиска (BinarySearchTree) с реализацией по
