@@ -21,7 +21,7 @@ public class Main extends Application {
         viewport.prefWidthProperty().bind(scene.widthProperty());
         viewport.prefHeightProperty().bind(scene.heightProperty());
 
-        stage.setTitle("Simple3DViewer");
+        stage.setTitle("R-B_TREE");
         stage.setScene(scene);
 
         stage.setMinWidth(1080);

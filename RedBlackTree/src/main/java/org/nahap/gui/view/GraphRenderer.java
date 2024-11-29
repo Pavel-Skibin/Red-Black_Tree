@@ -19,7 +19,6 @@ public class GraphRenderer {
                     .render(Format.PNG)
                     .toImage();
 
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "png", baos);
             byte[] imageData = baos.toByteArray();

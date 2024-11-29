@@ -4,9 +4,6 @@ import org.nahap.tree.bstree.BSTree;
 import org.nahap.tree.binarytree.BinaryTree;
 import org.nahap.tree.bstree.BSTreeAlgorithms;
 
-import java.awt.Color;
-
-
 
 public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
 
@@ -54,6 +51,7 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
         public BinaryTree.TreeNode<T> getRight() {
             return right;
         }
+
 
 
     }
@@ -317,8 +315,6 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
     }
 
 
-    // вспомогательные методы, сильно облегчающие жизнь
-    // (в частности проверяют все на null)
 
     private boolean colorOf(RBTreeNode node) {
         return node == null ? BLACK : node.color;
@@ -368,7 +364,6 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
     }
 
     private RBTreeNode grandparentOf(RBTreeNode node) {
-        // return parentOf(parentOf(node));
         return (node == null || node.parent == null) ? null : node.parent.parent;
     }
 

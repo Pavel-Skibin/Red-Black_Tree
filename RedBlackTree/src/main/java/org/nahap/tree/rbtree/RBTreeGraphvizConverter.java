@@ -25,13 +25,11 @@ public class RBTreeGraphvizConverter {
         dot.append(String.format("    \"%s\" [color=%s, style=filled, fontcolor=%s];\n",
                 node.value, color, fontColor));
 
-        // Left child
         if (node.left != null) {
             dot.append(String.format("    \"%s\" -- \"%s\";\n", node.value, node.left.value));
             appendNode(dot, node.left);
         }
 
-        // Right child
         if (node.right != null) {
             dot.append(String.format("    \"%s\" -- \"%s\";\n", node.value, node.right.value));
             appendNode(dot, node.right);

@@ -25,8 +25,6 @@ public class BSTreeAlgorithms {
         }
     }
 
-
-
     /**
      * Поиск минимального TreeNode в поддереве node
      *
@@ -49,8 +47,7 @@ public class BSTreeAlgorithms {
     }
 
     /**
-     * Поиск TreeNode с наибольшим значением, меньшим или равным value, в
-     * поддереве node
+     * Поиск TreeNode с наибольшим значением, меньшим или равным value, в поддереве node
      *
      * @param node Узел дерева
      * @param value Параметр
@@ -72,8 +69,7 @@ public class BSTreeAlgorithms {
     }
 
     /**
-     * Поиск TreeNode с наименьшим значением, большим или равным value, в
-     * поддереве node
+     * Поиск TreeNode с наименьшим значением, большим или равным value, в поддереве node
      *
      * @param node Узел дерева
      * @param value Параметр

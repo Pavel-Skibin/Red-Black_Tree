@@ -9,14 +9,14 @@ import java.util.Iterator;
  *
  * @param <T>
  */
-public interface BinaryTree<T> extends Iterable<T> {
+public interface BinaryTree<T>  {
 
     /**
      * Интерфейс для описания узла двоичного дерева
      *
      * @param <T>
      */
-    interface TreeNode<T> extends Iterable<T> {
+    interface TreeNode<T> {
 
         /**
          * @return Значение в узле дерева
@@ -38,35 +38,12 @@ public interface BinaryTree<T> extends Iterable<T> {
         }
 
 
-
-        /**
-         * Реализация Iterable&lt;T&gt;
-         *
-         * @return Итератор
-         */
-        @Override
-        default Iterator<T> iterator() {
-            return BinaryTreeAlgorithms.inOrderValues(this).iterator();
-        }
-
-
     }
 
     /**
      * @return Корень (вершина) дерева
      */
     TreeNode<T> getRoot();
-
-
-    /**
-     * Реализация Iterable&lt;T&gt;
-     *
-     * @return Итератор
-     */
-    @Override
-    default Iterator<T> iterator() {
-        return this.getRoot().iterator();
-    }
 
 
 }

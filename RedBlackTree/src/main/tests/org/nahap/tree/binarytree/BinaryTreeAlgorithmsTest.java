@@ -96,39 +96,62 @@ class BinaryTreeAlgorithmsTest {
         assertEquals(List.of(1, 2, 3, 4, 5, 6, 7), visited);
     }
 
-    @Test
-    void testPreOrderValues() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
-        List<Integer> result = new ArrayList<>();
-        BinaryTreeAlgorithms.preOrderValues(tree).forEach(result::add);
-
-        assertEquals(List.of(1, 2, 4, 5, 3, 6, 7), result);
+    private BinaryTree.TreeNode<Integer> createAsymmetricTree() {
+        // Дерево:
+        //        10
+        //      /    \
+        //     5      15
+        //      \        \
+        //       8       20
+        return new TestTreeNode<>(10,
+                new TestTreeNode<>(5,
+                        null,
+                        new TestTreeNode<>(8, null, null)),
+                new TestTreeNode<>(15,
+                        null,
+                        new TestTreeNode<>(20, null, null)));
     }
 
     @Test
-    void testInOrderValues() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
-        List<Integer> result = new ArrayList<>();
-        BinaryTreeAlgorithms.inOrderValues(tree).forEach(result::add);
+    void testPreOrderTraversalOnAsymmetricTree() {
+        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
 
-        assertEquals(List.of(4, 2, 5, 1, 6, 3, 7), result);
+        List<Integer> preOrder = new ArrayList<>();
+        BinaryTreeAlgorithms.preOrderVisit(tree, (value, level) -> preOrder.add(value));
+
+        assertEquals(List.of(10, 5, 8, 15, 20), preOrder);
+    }
+
+
+    @Test
+    void testInOrderTraversalOnAsymmetricTree() {
+        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
+
+        List<Integer> inOrder = new ArrayList<>();
+        BinaryTreeAlgorithms.inOrderVisit(tree, (value, level) -> inOrder.add(value));
+
+        assertEquals(List.of(5, 8, 10, 15, 20), inOrder);
     }
 
     @Test
-    void testPostOrderValues() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
-        List<Integer> result = new ArrayList<>();
-        BinaryTreeAlgorithms.postOrderValues(tree).forEach(result::add);
+    void testPostOrderTraversalOnAsymmetricTree() {
+        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
 
-        assertEquals(List.of(4, 5, 2, 6, 7, 3, 1), result);
+        List<Integer> postOrder = new ArrayList<>();
+        BinaryTreeAlgorithms.postOrderVisit(tree, (value, level) -> postOrder.add(value));
+
+        assertEquals(List.of(8, 5, 20, 15, 10), postOrder);
     }
 
     @Test
-    void testByLevelValues() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
-        List<Integer> result = new ArrayList<>();
-        BinaryTreeAlgorithms.byLevelValues(tree).forEach(result::add);
+    void testByLevelTraversalOnAsymmetricTree() {
+        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
 
-        assertEquals(List.of(1, 2, 3, 4, 5, 6, 7), result);
+        List<Integer> byLevel = new ArrayList<>();
+        BinaryTreeAlgorithms.byLevelVisit(tree, (value, level) -> byLevel.add(value));
+
+        assertEquals(List.of(10, 5, 15, 8, 20), byLevel);
     }
+
+
 }
