@@ -7,11 +7,11 @@ import org.nahap.tree.bstree.BSTreeAlgorithms;
 
 public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
 
-    static final boolean RED   = true;
-    static final boolean BLACK = false;
+    public static final boolean RED   = true;
+    public static final boolean BLACK = false;
 
 
-    class RBTreeNode implements BinaryTree.TreeNode<T> {
+    public  class RBTreeNode implements BinaryTree.TreeNode<T> {
 
         public T value;
         public boolean color;

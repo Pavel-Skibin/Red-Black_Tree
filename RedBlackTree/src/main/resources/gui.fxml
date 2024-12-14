@@ -6,8 +6,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.nahap.gui.controller.Controller">
     <children>
@@ -18,10 +18,11 @@
                         <HBox prefHeight="46.0" prefWidth="224.0">
                             <children>
                                 <TextField fx:id="textField" prefHeight="26.0" prefWidth="78.0" />
-                                <Button fx:id="addButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="Добавить" onAction="#handleAdd" />
-                                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="Удалить" onAction="#handleDelete" />
+                                <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAdd" prefHeight="26.0" prefWidth="94.0" text="Добавить" />
+                                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDelete" prefHeight="26.0" prefWidth="75.0" text="Удалить" />
                             </children>
                         </HBox>
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" prefHeight="26.0" prefWidth="233.0" text="Сохранить в SVG" />
                     </children>
                 </VBox>
             </content>

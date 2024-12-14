@@ -1,5 +1,6 @@
 package org.nahap.gui;
 
+import com.sun.source.tree.Tree;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,6 +32,7 @@ public class Main extends Application {
         stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 
         stage.show();
+
     }
 
     public static void main(String[] args) {
