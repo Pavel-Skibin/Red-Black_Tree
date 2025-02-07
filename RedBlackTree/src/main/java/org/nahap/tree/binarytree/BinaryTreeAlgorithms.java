@@ -25,10 +25,10 @@ public class BinaryTreeAlgorithms {
      * @param treeNode Узел поддерева, которое требуется "обойти"
      * @param visitor  Посетитель
      */
-    public static <T> void preOrderVisit(BinaryTree.TreeNode<T> treeNode, Visitor<T> visitor) {
+    public static <T> void preOrderVisit(BTree.TreeNode<T> treeNode, Visitor<T> visitor) {
 
         class Inner {
-            void preOrderVisit(BinaryTree.TreeNode<T> node, Visitor<T> visitor, int level) {
+            void preOrderVisit(BTree.TreeNode<T> node, Visitor<T> visitor, int level) {
                 if (node == null) {
                     return;
                 }
@@ -49,10 +49,10 @@ public class BinaryTreeAlgorithms {
      * @param treeNode Узел поддерева, которое требуется "обойти"
      * @param visitor  Посетитель
      */
-    public static <T> void inOrderVisit(BinaryTree.TreeNode<T> treeNode, Visitor<T> visitor) {
+    public static <T> void inOrderVisit(BTree.TreeNode<T> treeNode, Visitor<T> visitor) {
 
         class Inner {
-            void inOrderVisit(BinaryTree.TreeNode<T> node, Visitor<T> visitor, int level) {
+            void inOrderVisit(BTree.TreeNode<T> node, Visitor<T> visitor, int level) {
                 if (node == null) {
                     return;
                 }
@@ -74,10 +74,10 @@ public class BinaryTreeAlgorithms {
      * @param treeNode Узел поддерева, которое требуется "обойти"
      * @param visitor  Посетитель
      */
-    public static <T> void postOrderVisit(BinaryTree.TreeNode<T> treeNode, Visitor<T> visitor) {
+    public static <T> void postOrderVisit(BTree.TreeNode<T> treeNode, Visitor<T> visitor) {
 
         class Inner {
-            void postOrderVisit(BinaryTree.TreeNode<T> node, Visitor<T> visitor, int level) {
+            void postOrderVisit(BTree.TreeNode<T> node, Visitor<T> visitor, int level) {
                 if (node == null) {
                     return;
                 }
@@ -94,15 +94,15 @@ public class BinaryTreeAlgorithms {
 
     /**
      * Класс для хранения узла дерева вместе с его уровнем, нужен для метода
-     * {@link #byLevelVisit(BinaryTree.TreeNode, Visitor)}
+     * {@link #byLevelVisit(BTree.TreeNode, Visitor)}
      *
      * @param <T>
      */
     private static class QueueItem<T> {
-        public BinaryTree.TreeNode<T> node;
+        public BTree.TreeNode<T> node;
         public int level;
 
-        public QueueItem(BinaryTree.TreeNode<T> node, int level) {
+        public QueueItem(BTree.TreeNode<T> node, int level) {
             this.node = node;
             this.level = level;
         }
@@ -114,7 +114,7 @@ public class BinaryTreeAlgorithms {
      * @param treeNode Узел поддерева, которое требуется "обойти"
      * @param visitor  Посетитель
      */
-    public static <T> void byLevelVisit(BinaryTree.TreeNode<T> treeNode, Visitor<T> visitor) {
+    public static <T> void byLevelVisit(BTree.TreeNode<T> treeNode, Visitor<T> visitor) {
         Queue<QueueItem<T>> queue = new LinkedList<>();
         queue.add(new QueueItem<>(treeNode, 0));
         while (!queue.isEmpty()) {

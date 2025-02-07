@@ -7,14 +7,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BinaryTreeAlgorithmsTest {
+class BTreeAlgorithmsTest {
 
-    private static class TestTreeNode<T> implements BinaryTree.TreeNode<T> {
+    private static class TestTreeNode<T> implements BTree.TreeNode<T> {
         private final T value;
-        private final BinaryTree.TreeNode<T> left;
-        private final BinaryTree.TreeNode<T> right;
+        private final BTree.TreeNode<T> left;
+        private final BTree.TreeNode<T> right;
 
-        public TestTreeNode(T value, BinaryTree.TreeNode<T> left, BinaryTree.TreeNode<T> right) {
+        public TestTreeNode(T value, BTree.TreeNode<T> left, BTree.TreeNode<T> right) {
             this.value = value;
             this.left = left;
             this.right = right;
@@ -26,17 +26,17 @@ class BinaryTreeAlgorithmsTest {
         }
 
         @Override
-        public BinaryTree.TreeNode<T> getLeft() {
+        public BTree.TreeNode<T> getLeft() {
             return left;
         }
 
         @Override
-        public BinaryTree.TreeNode<T> getRight() {
+        public BTree.TreeNode<T> getRight() {
             return right;
         }
     }
 
-    private BinaryTree.TreeNode<Integer> createTestTree() {
+    private BTree.TreeNode<Integer> createTestTree() {
         // Дерево:
         //        1
         //      /   \
@@ -54,7 +54,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testPreOrderVisit() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
+        BTree.TreeNode<Integer> tree = createTestTree();
         List<Integer> visited = new ArrayList<>();
         BinaryTreeAlgorithms.Visitor<Integer> visitor = (value, level) -> visited.add(value);
 
@@ -65,7 +65,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testInOrderVisit() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
+        BTree.TreeNode<Integer> tree = createTestTree();
         List<Integer> visited = new ArrayList<>();
         BinaryTreeAlgorithms.Visitor<Integer> visitor = (value, level) -> visited.add(value);
 
@@ -76,7 +76,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testPostOrderVisit() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
+        BTree.TreeNode<Integer> tree = createTestTree();
         List<Integer> visited = new ArrayList<>();
         BinaryTreeAlgorithms.Visitor<Integer> visitor = (value, level) -> visited.add(value);
 
@@ -87,7 +87,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testByLevelVisit() {
-        BinaryTree.TreeNode<Integer> tree = createTestTree();
+        BTree.TreeNode<Integer> tree = createTestTree();
         List<Integer> visited = new ArrayList<>();
         BinaryTreeAlgorithms.Visitor<Integer> visitor = (value, level) -> visited.add(value);
 
@@ -96,7 +96,7 @@ class BinaryTreeAlgorithmsTest {
         assertEquals(List.of(1, 2, 3, 4, 5, 6, 7), visited);
     }
 
-    private BinaryTree.TreeNode<Integer> createAsymmetricTree() {
+    private BTree.TreeNode<Integer> createAsymmetricTree() {
         // Дерево:
         //        10
         //      /    \
@@ -114,7 +114,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testPreOrderTraversalOnAsymmetricTree() {
-        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
+        BTree.TreeNode<Integer> tree = createAsymmetricTree();
 
         List<Integer> preOrder = new ArrayList<>();
         BinaryTreeAlgorithms.preOrderVisit(tree, (value, level) -> preOrder.add(value));
@@ -125,7 +125,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testInOrderTraversalOnAsymmetricTree() {
-        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
+        BTree.TreeNode<Integer> tree = createAsymmetricTree();
 
         List<Integer> inOrder = new ArrayList<>();
         BinaryTreeAlgorithms.inOrderVisit(tree, (value, level) -> inOrder.add(value));
@@ -135,7 +135,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testPostOrderTraversalOnAsymmetricTree() {
-        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
+        BTree.TreeNode<Integer> tree = createAsymmetricTree();
 
         List<Integer> postOrder = new ArrayList<>();
         BinaryTreeAlgorithms.postOrderVisit(tree, (value, level) -> postOrder.add(value));
@@ -145,7 +145,7 @@ class BinaryTreeAlgorithmsTest {
 
     @Test
     void testByLevelTraversalOnAsymmetricTree() {
-        BinaryTree.TreeNode<Integer> tree = createAsymmetricTree();
+        BTree.TreeNode<Integer> tree = createAsymmetricTree();
 
         List<Integer> byLevel = new ArrayList<>();
         BinaryTreeAlgorithms.byLevelVisit(tree, (value, level) -> byLevel.add(value));

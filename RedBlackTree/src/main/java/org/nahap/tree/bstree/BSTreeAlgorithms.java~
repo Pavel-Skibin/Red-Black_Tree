@@ -1,0 +1,96 @@
+package org.nahap.tree.bstree;
+
+import org.nahap.tree.binarytree.BinaryTree;
+
+public class BSTreeAlgorithms {
+
+    /**
+     * Находит узел с заданным значением в поддереве.
+     *
+     * @param node  Узел дерева, с которого начинается поиск.
+     * @param value Значение для поиска.
+     * @param <T>   Тип значения в дереве.
+     * @return Узел, содержащий искомое значение, или null, если значение не найдено.
+     */
+    public static <T extends Comparable<? super T>> BinaryTree.TreeNode<T> searchNode(BinaryTree.TreeNode<T> node, T value) {
+        if (node == null) {
+            return null;
+        }
+        int comparisonResult = node.getValue().compareTo(value);
+        if (comparisonResult == 0) {
+            return node;
+        } else if (comparisonResult > 0) {
+            return searchNode(node.getLeft(), value);
+        } else {
+            return searchNode(node.getRight(), value);
+        }
+    }
+
+    /**
+     * Находит узел с минимальным значением в поддереве.
+     *
+     * @param node Узел, с которого начинается поиск минимального значения.
+     * @param <T>  Тип значения в дереве.
+     * @return Узел с минимальным значением.
+     */
+    public static <T extends Comparable<? super T>> BinaryTree.TreeNode<T> findMin(BinaryTree.TreeNode<T> node) {
+        return (node == null || node.getLeft() == null) ? node : findMin(node.getLeft());
+    }
+
+    /**
+     * Находит узел с максимальным значением в поддереве.
+     *
+     * @param node Узел, с которого начинается поиск максимального значения.
+     * @param <T>  Тип значения в дереве.
+     * @return Узел с максимальным значением.
+     */
+    public static <T extends Comparable<? super T>> BinaryTree.TreeNode<T> findMax(BinaryTree.TreeNode<T> node) {
+        return (node == null || node.getRight() == null) ? node : findMax(node.getRight());
+    }
+
+    /**
+     * Находит узел с наибольшим значением, меньшим или равным заданному.
+     *
+     * @param node  Узел, с которого начинается поиск.
+     * @param value Значение для поиска.
+     * @param <T>   Тип значения в дереве.
+     * @return Узел с наибольшим значением, меньшим или равным заданному значению.
+     */
+    public static <T extends Comparable<? super T>> BinaryTree.TreeNode<T> findFloor(BinaryTree.TreeNode<T> node, T value) {
+        if (node == null) {
+            return null;
+        }
+        int comparisonResult = value.compareTo(node.getValue());
+        if (comparisonResult == 0) {
+            return node;
+        } else if (comparisonResult < 0) {
+            return findFloor(node.getLeft(), value);
+        } else {
+            BinaryTree.TreeNode<T> result = findFloor(node.getRight(), value);
+            return (result != null) ? result : node;
+        }
+    }
+
+    /**
+     * Находит узел с наименьшим значением, большим или равным заданному.
+     *
+     * @param node  Узел, с которого начинается поиск.
+     * @param value Значение для поиска.
+     * @param <T>   Тип значения в дереве.
+     * @return Узел с наименьшим значением, большим или равным заданному.
+     */
+    public static <T extends Comparable<? super T>> BinaryTree.TreeNode<T> findCeiling(BinaryTree.TreeNode<T> node, T value) {
+        if (node == null) {
+            return null;
+        }
+        int comparisonResult = value.compareTo(node.getValue());
+        if (comparisonResult == 0) {
+            return node;
+        } else if (comparisonResult > 0) {
+            return findCeiling(node.getRight(), value);
+        } else {
+            BinaryTree.TreeNode<T> result = findCeiling(node.getLeft(), value);
+            return (result != null) ? result : node;
+        }
+    }
+}

@@ -8,12 +8,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.nahap.tree.rbtree.RBTree;
+import org.nahap.tree.rbtree.RedBlackTree;
 import org.nahap.gui.view.GraphRenderer;
 import org.nahap.tree.rbtree.RBTreeGraphvizConverter;
 
 import java.io.*;
-import java.nio.file.Files;
+
+import static org.nahap.gui.view.GraphRenderer.HORIZONTAL_INDENT;
+import static org.nahap.gui.view.GraphRenderer.VERTICAL_INDENT;
 
 public class Controller {
     @FXML private Canvas canvas;
@@ -21,7 +23,7 @@ public class Controller {
     @FXML private ScrollPane scrollPane;
     @FXML private TextField textField;
 
-    private final RBTree<Integer> tree = new RBTree<>();
+    private final RedBlackTree<Integer> tree = new RedBlackTree<>();
 
     @FXML
     public void initialize() {
@@ -66,13 +68,20 @@ public class Controller {
         System.out.println(dot);
         Platform.runLater(() -> {
             try {
-                GraphRenderer.renderTreeOnCanvas(tree.getRoot(), canvas);
+                GraphRenderer.NodeDrawResult result = GraphRenderer.renderTreeOnCanvas(tree.getRoot(), canvas);
+
+                double treeWidth = result.maxX + HORIZONTAL_INDENT;
+                double treeHeight = result.maxY + VERTICAL_INDENT;
+
+                canvas.setWidth(treeWidth);
+                canvas.setHeight(treeHeight);
             } catch (Exception e) {
                 System.err.println("Ошибка рендеринга: " + e.getMessage());
                 e.printStackTrace();
             }
         });
     }
+
 
     @FXML
     private void handleAdd() {

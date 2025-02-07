@@ -1,17 +1,15 @@
 package org.nahap.tree.rbtree;
 
+import org.nahap.tree.binarytree.BTree;
 import org.nahap.tree.bstree.BSTree;
-import org.nahap.tree.binarytree.BinaryTree;
-import org.nahap.tree.bstree.BSTreeAlgorithms;
+import org.nahap.tree.bstree.BSTreeUtils;
 
+public class RedBlackTree<T extends Comparable<? super T>> implements BSTree<T> {
 
-public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
-
-    public static final boolean RED   = true;
+    public static final boolean RED = true;
     public static final boolean BLACK = false;
 
-
-    public  class RBTreeNode implements BinaryTree.TreeNode<T> {
+    public class RBTreeNode implements BTree.TreeNode<T> {
 
         public T value;
         public boolean color;
@@ -35,34 +33,27 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
             this(value, null);
         }
 
-        // Ниже идет реализация интерфейса BinaryTree.TreeNode<T>
-
         @Override
         public T getValue() {
             return value;
         }
 
         @Override
-        public BinaryTree.TreeNode<T> getLeft() {
+        public BTree.TreeNode<T> getLeft() {
             return left;
         }
 
         @Override
-        public BinaryTree.TreeNode<T> getRight() {
+        public BTree.TreeNode<T> getRight() {
             return right;
         }
-
-
-
     }
 
-    RBTreeNode root = null;
+    private RBTreeNode root = null;
     private int size = 0;
 
-    // Ниже идет реализация интерфейса BSTree<T> (@Override-методы)
-
     @Override
-    public BinaryTree.TreeNode<T> getRoot() {
+    public BTree.TreeNode<T> getRoot() {
         return root;
     }
 
@@ -78,19 +69,21 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
             size++;
             return null;
         }
+
         RBTreeNode node = root;
         while (true) {
-            int cmp = value.compareTo(node.value);
-            if (cmp == 0) {
-                // в узле значение, равное value
+            int comparison = value.compareTo(node.value);
+            if (comparison == 0) {
                 T oldValue = node.value;
                 node.value = value;
                 return oldValue;
-            } else if (cmp < 0) {
+            }
+
+            if (comparison < 0) {
                 if (node.left == null) {
                     setLeft(node, new RBTreeNode(value));
                     size++;
-                    correctAfterAdd(node.left);
+                    fixAfterInsertion(node.left);
                     return null;
                 }
                 node = node.left;
@@ -98,7 +91,7 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
                 if (node.right == null) {
                     setRight(node, new RBTreeNode(value));
                     size++;
-                    correctAfterAdd(node.right);
+                    fixAfterInsertion(node.right);
                     return null;
                 }
                 node = node.right;
@@ -108,43 +101,41 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
 
     @Override
     public T remove(T value) {
-        RBTreeNode node = (RBTreeNode) getNode(value);
+        RBTreeNode node = (RBTreeNode) findNode(value);
         if (node == null) {
-            // в дереве нет такого значения
             return null;
         }
+
         T oldValue = node.value;
-        if (node.left != null && node.right!= null) {
-            RBTreeNode nextValueNode = (RBTreeNode) BSTreeAlgorithms.getMinNode(node.right);
-            node.value = nextValueNode.value;
-            node = nextValueNode;
+        if (node.left != null && node.right != null) {
+            RBTreeNode successor = (RBTreeNode) BSTreeUtils.findMinNode(node.right);
+            node.value = successor.value;
+            node = successor;
         }
-        // здесь node имеет не более одного потомка
+
         RBTreeNode child = (node.left != null) ? node.left : node.right;
         if (child != null) {
             if (node == root) {
                 setRoot(child);
                 root.color = BLACK;
             } else if (node.parent.left == node) {
-                // child - левый потомок node
                 setLeft(node.parent, child);
             } else {
-                // child - правый потомок node
                 setRight(node.parent, child);
             }
+
             if (node.color == BLACK) {
-                // если удалили черный узел, то нарушилось равновесие по черной высоте
-                correctAfterRemove(child);
+                fixAfterDeletion(child);
             }
         } else if (node == root) {
             root = null;
         } else {
-            // если удалили черный узел, то нарушилось равновесие по черной высоте
             if (node.color == BLACK) {
-                correctAfterRemove(node);
+                fixAfterDeletion(node);
             }
             removeFromParent(node);
         }
+
         size--;
         return oldValue;
     }
@@ -155,69 +146,51 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
         size = 0;
     }
 
+    private void fixAfterInsertion(RBTreeNode node) {
+        node.color = RED;
 
-    /**
-     * Классический алгоритм восстановления красно-черного дерева после добавления узла
-     */
-    private void correctAfterAdd(RBTreeNode node) {
-        // шаг 1: Цвет узла - красный
-        if (node != null) {
-            node.color = RED;
-        }
-
-        // шаг 2: Корректировка двух подряд красных узлов (если имеет место быть)
-        if (node != null && node != root && colorOf(node.parent) == RED) {
-
-            // Step 2a (simplest): Recolor, and move up to see if more work
-            // needed
-            if (isRed(siblingOf(parentOf(node)))) {
-                setColor(parentOf(node), BLACK);
-                setColor(siblingOf(parentOf(node)), BLACK);
-                setColor(grandparentOf(node), RED);
-                correctAfterAdd(grandparentOf(node));
-            }
-
-            // Step 2b: Restructure for a parent who is the left child of the
-            // grandparent. This will require a single right rotation if n is
-            // also
-            // a left child, or a left-right rotation otherwise.
-            else if (parentOf(node) == leftOf(grandparentOf(node))) {
-                if (node == rightOf(parentOf(node))) {
-                    leftRotate(node = parentOf(node));
+        while (node != null && node != root && node.parent.color == RED) {
+            if (node.parent == leftOf(node.parent.parent)) {
+                RBTreeNode uncle = rightOf(node.parent.parent);
+                if (uncle != null && uncle.color == RED) {
+                    setColor(node.parent, BLACK);
+                    setColor(uncle, BLACK);
+                    setColor(node.parent.parent, RED);
+                    node = node.parent.parent;
+                } else {
+                    if (node == rightOf(node.parent)) {
+                        node = node.parent;
+                        leftRotate(node);
+                    }
+                    setColor(node.parent, BLACK);
+                    setColor(node.parent.parent, RED);
+                    rightRotate(node.parent.parent);
                 }
-                setColor(parentOf(node), BLACK);
-                setColor(grandparentOf(node), RED);
-                rightRotate(grandparentOf(node));
-            }
-
-            // Step 2c: Restructure for a parent who is the right child of the
-            // grandparent. This will require a single left rotation if n is
-            // also
-            // a right child, or a right-left rotation otherwise.
-            else if (parentOf(node) == rightOf(grandparentOf(node))) {
-                if (node == leftOf(parentOf(node))) {
-                    rightRotate(node = parentOf(node));
+            } else {
+                RBTreeNode uncle = leftOf(node.parent.parent);
+                if (uncle != null && uncle.color == RED) {
+                    setColor(node.parent, BLACK);
+                    setColor(uncle, BLACK);
+                    setColor(node.parent.parent, RED);
+                    node = node.parent.parent;
+                } else {
+                    if (node == leftOf(node.parent)) {
+                        node = node.parent;
+                        rightRotate(node);
+                    }
+                    setColor(node.parent, BLACK);
+                    setColor(node.parent.parent, RED);
+                    leftRotate(node.parent.parent);
                 }
-                setColor(parentOf(node), BLACK);
-                setColor(grandparentOf(node), RED);
-                leftRotate(grandparentOf(node));
             }
         }
 
-        // шаг 3: раскрасить корень дерева черным
         setColor(root, BLACK);
     }
 
-
-    /**
-     * Classic algorithm for fixing up a tree after removing a node; the
-     * parameter to this method is the node that was pulled up to where the
-     * removed node was.
-     */
-    private void correctAfterRemove(RBTreeNode node) {
+    private void fixAfterDeletion(RBTreeNode node) {
         while (node != root && isBlack(node)) {
             if (node == leftOf(parentOf(node))) {
-                // Pulled up node is a left child
                 RBTreeNode sibling = rightOf(parentOf(node));
                 if (isRed(sibling)) {
                     setColor(sibling, BLACK);
@@ -242,7 +215,6 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
                     node = root;
                 }
             } else {
-                // pulled up node is a right child
                 RBTreeNode sibling = leftOf(parentOf(node));
                 if (isRed(sibling)) {
                     setColor(sibling, BLACK);
@@ -272,9 +244,8 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
     }
 
     private void leftRotate(RBTreeNode node) {
-        if (node.right == null) {
-            return;
-        }
+        if (node.right == null) return;
+
         RBTreeNode right = node.right;
         setRight(node, right.left);
         if (node.parent == null) {
@@ -288,9 +259,8 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
     }
 
     private void rightRotate(RBTreeNode node) {
-        if (node.left == null) {
-            return;
-        }
+        if (node.left == null) return;
+
         RBTreeNode left = node.left;
         setLeft(node, left.right);
         if (node.parent == null) {
@@ -313,8 +283,6 @@ public class RBTree<T extends Comparable<? super T>> implements BSTree<T> {
             node.parent = null;
         }
     }
-
-
 
     private boolean colorOf(RBTreeNode node) {
         return node == null ? BLACK : node.color;

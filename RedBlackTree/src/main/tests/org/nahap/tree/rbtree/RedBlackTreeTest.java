@@ -3,11 +3,11 @@ package org.nahap.tree.rbtree;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class RBTreeTest {
+class RedBlackTreeTest {
 
     @Test
     void testPutSingleElement() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         assertNotNull(tree.getRoot());
         assertEquals(10, tree.getRoot().getValue());
@@ -16,7 +16,7 @@ class RBTreeTest {
 
     @Test
     void testPutMultipleElements() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         tree.put(20);
         tree.put(5);
@@ -31,7 +31,7 @@ class RBTreeTest {
 
     @Test
     void testRedBlackPropertiesAfterInsert() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         tree.put(20);
         tree.put(5);
@@ -43,7 +43,7 @@ class RBTreeTest {
         tree.put(30);
 
 
-        assertFalse(((RBTree<Integer>.RBTreeNode) tree.getRoot()).color);
+        assertFalse(((RedBlackTree<Integer>.RBTreeNode) tree.getRoot()).color);
 
 
         assertTrue(isValidRedBlackTree(tree));
@@ -63,7 +63,7 @@ class RBTreeTest {
 
     @Test
     void testRemoveElement() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         tree.put(20);
         tree.put(5);
@@ -77,7 +77,7 @@ class RBTreeTest {
 
     @Test
     void testRemoveRoot() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         tree.put(20);
         tree.put(5);
@@ -90,7 +90,7 @@ class RBTreeTest {
 
     @Test
     void testClearTree() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         tree.put(20);
         tree.put(5);
@@ -103,7 +103,7 @@ class RBTreeTest {
 
     @Test
     void testTreeHeight() {
-        RBTree<Integer> tree = new RBTree<>();
+        RedBlackTree<Integer> tree = new RedBlackTree<>();
         tree.put(10);
         tree.put(20);
         tree.put(5);
@@ -113,19 +113,19 @@ class RBTreeTest {
     }
 
     // Проверка корректности свойств красно-черного дерева
-    private boolean isValidRedBlackTree(RBTree<Integer> tree) {
-        return validateNode((RBTree<Integer>.RBTreeNode) tree.getRoot());
+    private boolean isValidRedBlackTree(RedBlackTree<Integer> tree) {
+        return validateNode((RedBlackTree<Integer>.RBTreeNode) tree.getRoot());
     }
 
-    private boolean validateNode(RBTree<Integer>.RBTreeNode node) {
+    private boolean validateNode(RedBlackTree<Integer>.RBTreeNode node) {
         if (node == null) {
             return true;
         }
 
         // У красного узла не должно быть красных потомков
-        if (node.color == RBTree.RED) {
-            if ((node.left != null && node.left.color == RBTree.RED) ||
-                    (node.right != null && node.right.color == RBTree.RED)) {
+        if (node.color == RedBlackTree.RED) {
+            if ((node.left != null && node.left.color == RedBlackTree.RED) ||
+                    (node.right != null && node.right.color == RedBlackTree.RED)) {
                 return false;
             }
         }

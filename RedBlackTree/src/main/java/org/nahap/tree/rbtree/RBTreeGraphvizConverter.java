@@ -2,25 +2,25 @@ package org.nahap.tree.rbtree;
 
 
 public class RBTreeGraphvizConverter {
-    public static <T extends Comparable<? super T>> String convertToDot(RBTree<T> tree) {
+    public static <T extends Comparable<? super T>> String convertToDot(RedBlackTree<T> tree) {
         StringBuilder dot = new StringBuilder();
         dot.append("graph RedBlackTree {\n");
         dot.append("    node [shape=circle];\n");
 
-        if (tree.root != null) {
-            appendNode(dot, tree.root);
+        if (tree.getRoot() != null) {
+            appendNode(dot, (RedBlackTree<T>.RBTreeNode) tree.getRoot());
         }
 
         dot.append("}");
         return dot.toString();
     }
 
-    private static <T extends Comparable<? super T>> void appendNode(StringBuilder dot, RBTree<T>.RBTreeNode node) {
+    private static <T extends Comparable<? super T>> void appendNode(StringBuilder dot, RedBlackTree<T>.RBTreeNode node) {
         if (node == null) return;
 
 
-        String color = node.color == RBTree.RED ? "red" : "black";
-        String fontColor = node.color == RBTree.RED ? "black" : "white";
+        String color = node.color == RedBlackTree.RED ? "red" : "black";
+        String fontColor = node.color == RedBlackTree.RED ? "black" : "white";
 
         dot.append(String.format("    \"%s\" [color=%s, style=filled, fontcolor=%s];\n",
                 node.value, color, fontColor));

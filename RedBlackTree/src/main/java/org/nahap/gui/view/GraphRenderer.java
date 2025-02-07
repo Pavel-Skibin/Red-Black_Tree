@@ -5,8 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nahap.tree.binarytree.BinaryTree;
-import org.nahap.tree.rbtree.RBTree;
+import org.nahap.tree.binarytree.BTree;
+import org.nahap.tree.rbtree.RedBlackTree;
 
 public class GraphRenderer {
 
@@ -27,26 +27,19 @@ public class GraphRenderer {
     }
 
 
-    private static NodeDrawResult paintNode(BinaryTree.TreeNode<?> node, GraphicsContext gc, double x, double y) {
+    private static NodeDrawResult paintNode(BTree.TreeNode<?> node, GraphicsContext gc, double x, double y) {
         if (node == null) {
             return null;
         }
 
-
         double dynamicHorizontalSpacing =   HORIZONTAL_INDENT;
-
-
         NodeDrawResult leftResult = paintNode(node.getLeft(), gc, x, y + NODE_DIAMETER + VERTICAL_INDENT);
-
 
         double rightX = (leftResult != null)
                 ? leftResult.maxX + dynamicHorizontalSpacing
                 : x + dynamicHorizontalSpacing;
 
-
         NodeDrawResult rightResult = paintNode(node.getRight(), gc, rightX, y + NODE_DIAMETER + VERTICAL_INDENT);
-
-
         double thisX;
         if (leftResult == null) {
             thisX = x;
@@ -56,14 +49,12 @@ public class GraphRenderer {
             thisX = (leftResult.center + rightResult.center) / 2 - NODE_DIAMETER / 2;
         }
 
-
         Color nodeColor;
-        if (node instanceof RBTree.RBTreeNode rbNode) {
-            nodeColor = rbNode.color == RBTree.RED ? Color.RED : Color.BLACK;
+        if (node instanceof RedBlackTree.RBTreeNode rbNode) {
+            nodeColor = rbNode.color == RedBlackTree.RED ? Color.RED : Color.BLACK;
         } else {
             nodeColor = Color.BLACK; // По умолчанию черный, если узел не является частью красно-черного дерева
         }
-
 
         double centerX = thisX + NODE_DIAMETER / 2;
         double centerY = y + NODE_DIAMETER / 2;
@@ -127,7 +118,7 @@ public class GraphRenderer {
     }
 
 
-    public static NodeDrawResult renderTreeOnCanvas(BinaryTree.TreeNode<?> root, Canvas canvas) {
+    public static NodeDrawResult renderTreeOnCanvas(BTree.TreeNode<?> root, Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(Color.WHITE);
@@ -136,8 +127,6 @@ public class GraphRenderer {
         NodeDrawResult rootResult = null;
         if (root != null) {
             rootResult = paintNode(root, gc, HORIZONTAL_INDENT, 20);
-
-
         }
 
         return rootResult;
