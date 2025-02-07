@@ -132,4 +132,20 @@ public class GraphRenderer {
         return rootResult;
     }
 
+    public static NodeDrawResult calculateTreeDimensions(BTree.TreeNode<?> root) {
+        if (root == null) return new NodeDrawResult(0, 0, 0);
+
+        NodeDrawResult leftResult = calculateTreeDimensions(root.getLeft());
+        NodeDrawResult rightResult = calculateTreeDimensions(root.getRight());
+
+        double maxX = Math.max(leftResult.maxX, rightResult.maxX) + NODE_DIAMETER + HORIZONTAL_INDENT;
+        double maxY = Math.max(leftResult.maxY, rightResult.maxY) + NODE_DIAMETER + VERTICAL_INDENT;
+
+        return new NodeDrawResult(
+                (leftResult.center + rightResult.center) / 2,
+                maxX,
+                maxY
+        );
+    }
+
 }

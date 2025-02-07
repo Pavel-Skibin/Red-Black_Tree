@@ -1,6 +1,6 @@
 package org.nahap.gui.controller;
 
-import javafx.application.Platform;
+
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
@@ -14,8 +14,6 @@ import org.nahap.tree.rbtree.RBTreeGraphvizConverter;
 
 import java.io.*;
 
-import static org.nahap.gui.view.GraphRenderer.HORIZONTAL_INDENT;
-import static org.nahap.gui.view.GraphRenderer.VERTICAL_INDENT;
 
 public class Controller {
     @FXML private Canvas canvas;
@@ -25,62 +23,83 @@ public class Controller {
 
     private final RedBlackTree<Integer> tree = new RedBlackTree<>();
 
+
+
+
+    // Добавляем эти поля в класс
+    private double lastX;
+    private double lastY;
+
     @FXML
     public void initialize() {
-        setupCanvasResizing();
+        setupScrollPane();
+        setupDragHandlers();
         populateInitialTree();
         renderTree();
     }
 
+    private void setupScrollPane() {
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setPannable(true);
+
+        canvas.setWidth(4000);
+        canvas.setHeight(1000);
+
+        canvasContainer.setPrefWidth(4000);
+        canvasContainer.setPrefHeight(1000);
+    }
+
+    private void setupDragHandlers() {
+        canvas.setOnMousePressed(e -> {
+            lastX = e.getX();
+            lastY = e.getY();
+            canvas.setCursor(javafx.scene.Cursor.CLOSED_HAND);
+        });
+
+        canvas.setOnMouseDragged(e -> {
+            double deltaX = e.getX() - lastX;
+            double deltaY = e.getY() - lastY;
+
+            scrollPane.setHvalue(scrollPane.getHvalue() - deltaX / (canvasContainer.getWidth() - scrollPane.getViewportBounds().getWidth()));
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY / (canvasContainer.getHeight() - scrollPane.getViewportBounds().getHeight()));
+
+            lastX = e.getX();
+            lastY = e.getY();
+        });
+
+        canvas.setOnMouseReleased(e -> canvas.setCursor(javafx.scene.Cursor.DEFAULT));
+    }
+
+    private void renderTree() {
+        if (canvas.getWidth() <= 0 || canvas.getHeight() <= 0) return;
+
+        GraphRenderer.NodeDrawResult result = GraphRenderer.renderTreeOnCanvas(tree.getRoot(), canvas);
+
+        double requiredWidth = result.maxX + GraphRenderer.HORIZONTAL_INDENT * 2;
+        double requiredHeight = result.maxY + GraphRenderer.VERTICAL_INDENT * 2;
+
+        if (requiredWidth > canvas.getWidth()) {
+            canvas.setWidth(requiredWidth);
+            canvasContainer.setPrefWidth(requiredWidth);
+        }
+
+        if (requiredHeight > canvas.getHeight()) {
+            canvas.setHeight(requiredHeight);
+            canvasContainer.setPrefHeight(requiredHeight);
+        }
+    }
+
+
+
     private void populateInitialTree() {
-        for (int i = 3; i <= 30; i+=4) {
+        for (int i = 3; i <= 30; i+=1) {
             int m = (int) (i * Math.pow(-1, i));
             tree.put(i);
             tree.put(m);
         }
     }
 
-    private void setupCanvasResizing() {
-
-        canvas.widthProperty().bind(canvasContainer.widthProperty());
-        canvas.heightProperty().bind(canvasContainer.heightProperty());
-
-
-        canvasContainer.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal.doubleValue() > 0) {
-                renderTree();
-            }
-        });
-
-        canvasContainer.heightProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal.doubleValue() > 0) {
-                renderTree();
-            }
-        });
-    }
-
-    private void renderTree() {
-        if (canvas.getWidth() <= 0 || canvas.getHeight() <= 0) {
-            return;
-        }
-
-        String dot = RBTreeGraphvizConverter.convertToDot(tree);
-        System.out.println(dot);
-        Platform.runLater(() -> {
-            try {
-                GraphRenderer.NodeDrawResult result = GraphRenderer.renderTreeOnCanvas(tree.getRoot(), canvas);
-
-                double treeWidth = result.maxX + HORIZONTAL_INDENT;
-                double treeHeight = result.maxY + VERTICAL_INDENT;
-
-                canvas.setWidth(treeWidth);
-                canvas.setHeight(treeHeight);
-            } catch (Exception e) {
-                System.err.println("Ошибка рендеринга: " + e.getMessage());
-                e.printStackTrace();
-            }
-        });
-    }
 
 
     @FXML
